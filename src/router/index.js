@@ -11,12 +11,44 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login/',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+  },
+  {
+    path: '/logoff/',
+    name: 'logoff',
+    component: () => import(/* webpackChunkName: "logoff" */ '../views/Logoff.vue')
+  },
+  {
+    path: '/res-table/',
+    name: 'res-table',
+    component: () => import(/* webpackChunkName: "res-view" */ '../views/Res-Table.vue')
+  },
+  {
+    path: '/res-view/',
+    name: 'res-view',
+    component: () => import(/* webpackChunkName: "res-view" */ '../views/Res-View.vue')
+  },
+  {
+    path: '/ag-grid/',
+    name: 'ag-grid',
+    component: () => import(/* webpackChunkName: "res-view" */ '../views/Ag-Grid.vue')
+  },
+  {
+    path: '/dhtmlx/',
+    name: 'dhtmlx',
+    component: () => import(/* webpackChunkName: "res-view" */ '../views/dhcmlxGrid.vue')
+  },
+  {
+    path: '/resview/',
+    name: 'resview',
+    component: () => import(/* webpackChunkName: "res-view" */ '../views/ResView.vue')
+  },
+  {
+    path: '/rootspaceedit/',
+    name: 'rootspaceedit',
+    component: () => import(/* webpackChunkName: "res-view" */ '../views/rootSpaceEdit.vue')
   }
 ]
 

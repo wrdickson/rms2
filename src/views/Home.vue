@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-container fluid>
+    <h1>Home</h1>
+    <v-btn class="mb-1" color="success" @click="testToken">Test Token</v-btn><br/>
+    <v-btn color="warning" @click="ruinToken">Ruin Token</v-btn>
+  </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import api from './../api/api.js'
 export default {
-  name: 'Home',
   components: {
-    HelloWorld
+  },
+  computed: {
+    account: {
+      get: function () { return this.$store.state.account }
+    },
+    jwt: function () { return this.$store.state.jwt }
+  },
+  methods: {
+    ruinToken () {
+      //  debug, ruin the token
+      this.$store.commit('setJwt', this.jwt + 'a')
+    },
+    testToken () {
+      api.account.testToken(this.jwt).then((response) => {
+        console.log(response.data)
+      })
+    }
   }
 }
 </script>
