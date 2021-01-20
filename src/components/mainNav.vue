@@ -100,6 +100,18 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-item
+          v-if="account.id > 0"
+          to="/tapechart"
+        >
+          <v-list-item-action>
+            <v-icon>fa-calendar</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Tape Chart</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
     <v-app-bar

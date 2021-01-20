@@ -27,7 +27,6 @@ export default {
       return JSON.parse(JSON.stringify(this.rootSpaces))
     },
     treeData () {
-      // temp
       //  generate json from rootSpaces
       const treeJson = []
       //  use a clone
@@ -53,7 +52,6 @@ export default {
       _.each(this.cRootSpaces, (iSpace) => {
         if (iSpace.childOf === spaceId) {
           //  RECURSIVE --->
-          console.log('hit', iSpace)
           var iChildObj = {
             id: iSpace.id,
             value: iSpace.title + ' [Id:' + iSpace.id + ' CO:' + iSpace.childOf + ' DO:' + iSpace.displayOrder + ' SC:' + iSpace.showChildren + ']',
@@ -66,7 +64,6 @@ export default {
       return childrenArray
     },
     renderTree () {
-      console.log('renderTree() fires . . .', this.treeData)
       //  destroy the tree if it exists
       if (this.tree) {
         this.tree.destructor()
@@ -77,12 +74,10 @@ export default {
     }
   },
   mounted () {
-    console.log('this.rootSpaces @ mounted()', this.rootSpaces)
     this.renderTree()
   },
   watch: {
     rootSpaces: function (val) {
-      console.log('rootSpaces change @ tree')
       this.renderTree()
     }
   },

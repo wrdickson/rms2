@@ -1,38 +1,32 @@
 <template>
-  <div style="width: 100%; height: 700px;">
-    <v-btn @click="hideRow">hiderow</v-btn>
-    <v-btn @click="showRow">showrow</v-btn>
-    <v-btn @click="editCell">editcell</v-btn>
+  <div>
     <div
       id="grid"
       ref="grid"
       class="dhx-container--grid"
-      style="height: 500px;"
+      style="height: 500px; width: 800px;"
     ></div>
   </div>
 </template>
 
 <script>
 import 'dhx-suite/codebase/suite.min.css'
+//  eslint-disable-next-line
 import { Grid as GridDHX } from 'dhx-suite'
 import dayjs from 'dayjs'
+//  eslint-disable-next-line
 import _ from 'lodash'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 dayjs.extend(isSameOrBefore)
 export default {
-  name: 'resViewGrid',
-  props: [
-    'startDate',
-    'endDate',
-    'reservations',
-    'spaces'
-  ],
-  data: function () {
+  name: 'tapeChartGrid',
+  props: {
+    rootSpaces: Array,
+    startDate: String,
+    endDate: String
+  },
+  data: () => {
     return {
-      dataset: [
-        { room: 'foot', bar: 'bart' },
-        { room: 'fooey', bar: 'bartholemew' }
-      ],
       grid: null,
       scrollPosition: {
         x: 0,
@@ -41,7 +35,6 @@ export default {
     }
   },
   computed: {
-    //  grid consumes this to render the columns
     columns () {
       var columns = []
       //  first column - room name
@@ -61,26 +54,38 @@ export default {
       while (iDate.diff(dayjs(this.endDate), 'day') < 0)
       return columns
     },
-    resDataSet () {
+    reservations () {
+      return this.$store.state.reservations
+    },
+    rows () {
+      /*
+      * iterate through each of the rootSpaces,
+      * THEN add the rootSpace to the room column & the toggle button to the toggle column
+      * THEN iterate through the reservations that have that spaceId & create
+      * a cell with just the resId . . . we'll handle the html in spans()
+      */
       var resData = []
-      _.each(this.spaces, (space) => {
-        var iData = {
-          id: space.space_id,
-          room: space.description,
-          toggle: '<span id="toggle' + space.space_id + '" class="cell__html"><i data-toggleid="' + space.space_id + '"class="mdi mdi-arrow-right-drop-circle mdi-24px"></i></span>'
+      var iData = {} //  the object that makes a row, cells by column id
+      var dayBeforeStart = null
+      var resesBySpace = []
+
+      _.each(this.rootSpaces, (space) => {
+        iData = {
+          id: space.id,
+          room: space.title,
+          toggle: '<span id="toggle' + space.id + '" class="cell__html"><i data-toggleid="' + space.id + '"class="mdi mdi-arrow-right-drop-circle mdi-24px"></i></span>'
         }
-        var reses = _.filter(this.reservations, function (o) {
-          return o.space_id === space.space_id
+        resesBySpace = _.filter(this.reservations, function (o) {
+          return o.space_id === space.id
         })
-        _.each(reses, (res) => {
+        _.each(resesBySpace, (res) => {
           /* we need to handle the case where the checkin date is BEFORE
           *  start date. In this case, use startDate instead
           *  Sketchy, but it doesn't change the reservation data
           *  which is the authority in generating spans
           */
-          var dayBeforeStart = dayjs(this.startDate).subtract(1, 'day')
+          dayBeforeStart = dayjs(this.startDate).subtract(1, 'day')
           if (dayjs(res.checkin).isSameOrBefore(dayBeforeStart)) {
-            console.log('got one in resDataSet', res)
             //  assign grid start date rather than the usual checkin
             iData[this.startDate] = res.id
           } else {
@@ -117,42 +122,16 @@ export default {
         spans.push(iSpan)
       })
       return spans
-    },
-    //  this is basically a copy of the 'show_subspaces' property on each
-    //  space object.  the stored 'show_subspaces' is basically the initial state
-    //  we want the view to be in  . . but there will be lots of hiding and showing
-    //  as the user's interaction with the grid continues . . .
-    toggleState () {
-      var toggleState = []
-      _.each(this.spaces, (space) => {
-        var obj = {
-          space_id: space.space_id,
-          show_subspaces: space.show_subspaces
-        }
-        toggleState.push(obj)
-      })
-      return toggleState
     }
   },
   methods: {
-    hideRow () {
-      this.grid.hideRow(204)
-    },
-    showRow () {
-      this.grid.showRow(204)
-    },
-    editCell () {
-      console.log('go')
-      this.resDataSet[0].toggle = '<span id="toggle1" class="cell__html"><i data-toggleid="balvatsky"class="mdi mdi-home mdi-24px"></i></span>'
-      this.grid.paint()
-    },
     renderGrid () {
       if (this.grid) {
         this.grid.destructor()
       }
       this.grid = new GridDHX(this.$refs.grid, {
         columns: this.columns,
-        data: this.resDataSet,
+        data: this.rows,
         spans: this.spans,
         adjust: false,
         autoWidth: true,
@@ -167,10 +146,6 @@ export default {
           onclick: {
             cell__html: (event, data) => {
               var resId = event.originalTarget.dataset.resid
-              //  send the event to the parent component
-              //  this.$emit('resClick', resId)
-              console.log('event', event)
-              console.log('data', data)
               console.log('resId: ', resId)
             }
           }
@@ -180,13 +155,12 @@ export default {
       this.grid.events.on('CellClick', (row, column, e) => {
         //  send the event to the parent component
         //  this.$emit('cellClick', row.id, column.id)
-        console.log('row', row)
-        console.log('column', column)
-        console.log('e', e)
+        const toggleId = event.target.getAttribute('data-toggleid')
+        console.log('toggleId', toggleId)
         const selectedSpaceId = row.id
-        const selectedDate = column.id
+        const selectedColumn = column.id
         console.log('selectedSpaceId: ', selectedSpaceId)
-        console.log('selectedDate: ', selectedDate)
+        console.log('selectedColumn: ', selectedColumn)
       })
       this.grid.events.on('scroll', (position) => {
         //  console.log(position)
@@ -195,28 +169,18 @@ export default {
       })
     }
   },
-  watch: {
-    startDate: function (val) {
-      this.renderGrid()
-    }
-  },
   mounted () {
     this.renderGrid()
   },
-  beforeDestroy () {
-    if (this.grid) {
-      this.grid.destructor()
+  watch: {
+    startDate: function (val) {
+      this.renderGrid()
     }
   }
 }
 </script>
 
 <style>
-#grid{
-  width: 100%;
-  height: 300px;
-  z-index: 100;
-}
 .resActive{
   background-color: rgb(146, 158, 211);
   padding-left: 2px;

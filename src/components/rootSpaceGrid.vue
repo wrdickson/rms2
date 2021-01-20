@@ -13,7 +13,7 @@
         flat
         dense
       >
-        <v-toolbar-title>Edit Root Spaces</v-toolbar-title>
+        <v-toolbar-title>Root Spaces Admin</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -288,10 +288,12 @@ export default {
           text: 'Child Of',
           value: 'childOf'
         },
+        /*
         {
           text: 'Space Code',
           value: 'spaceCode'
         },
+        */
         {
           text: 'Action',
           value: 'action'

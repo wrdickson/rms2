@@ -1,23 +1,21 @@
 <template>
-
-    <v-row no-gutters>
-      <v-col sm="7">
-        <rootSpaceGrid
-          v-if="rootSpaces"
-          :rootSpaces="rootSpacesPlus"
-          @saveNewRootSpace="saveNewRootSpace"
-          @deleteRootSpace="deleteRootSpace"
-          @updateRootSpace="updateRootSpace"
-        />
-      </v-col>
-      <v-col sm="5">
-        <rootSpaceTree
-          v-if="rootSpaces"
-          :rootSpaces="rootSpacesPlus"
-        />
-      </v-col>
-    </v-row>
-
+  <v-row no-gutters>
+    <v-col sm="7">
+      <rootSpaceGrid
+        v-if="rootSpaces"
+        :rootSpaces="rootSpacesPlus"
+        @saveNewRootSpace="saveNewRootSpace"
+        @deleteRootSpace="deleteRootSpace"
+        @updateRootSpace="updateRootSpace"
+      />
+    </v-col>
+    <v-col sm="5">
+      <rootSpaceTree
+        v-if="rootSpaces"
+        :rootSpaces="rootSpacesPlus"
+      />
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -32,7 +30,6 @@ export default {
     rootSpaceTree
   },
   created () {
-    console.log('rootSpaceEdit created()')
     //  get the data at load
     api.engine.getRootSpaces(this.token).then((response) => {
       this.rootSpaces = response.data.root_spaces

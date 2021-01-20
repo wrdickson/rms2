@@ -49,6 +49,11 @@ const routes = [
     path: '/rootspaceedit/',
     name: 'rootspaceedit',
     component: () => import(/* webpackChunkName: "res-view" */ '../views/rootSpaceEdit.vue')
+  },
+  {
+    path: '/tapechart/',
+    name: 'tapechart',
+    component: () => import(/* webpackChunkName: "tape-chart" */ '../views/TapeChart.vue')
   }
 ]
 
