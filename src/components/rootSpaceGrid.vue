@@ -2,7 +2,7 @@
   <v-data-table
     dense
     fixed-header
-    height="400"
+    height="500"
     :loading="loading"
     style="width: 100%"
     :headers="headers"
@@ -283,10 +283,6 @@ export default {
         {
           text: 'Show Children',
           value: 'showChildren'
-        },
-        {
-          text: 'View Children',
-          value: 'viewChildren'
         },
         {
           text: 'Child Of',

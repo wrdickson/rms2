@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col>
+
+    <v-row no-gutters>
+      <v-col sm="7">
         <rootSpaceGrid
           v-if="rootSpaces"
           :rootSpaces="rootSpacesPlus"
@@ -10,18 +10,26 @@
           @updateRootSpace="updateRootSpace"
         />
       </v-col>
+      <v-col sm="5">
+        <rootSpaceTree
+          v-if="rootSpaces"
+          :rootSpaces="rootSpacesPlus"
+        />
+      </v-col>
     </v-row>
-  </v-container>
+
 </template>
 
 <script>
 import api from '../api/api.js'
 import rootSpaceGrid from '../components/rootSpaceGrid.vue'
+import rootSpaceTree from '../components/rootSpaceTree.vue'
 import _ from 'lodash'
 export default {
   name: 'rootSpaceEdit',
   components: {
-    rootSpaceGrid
+    rootSpaceGrid,
+    rootSpaceTree
   },
   created () {
     console.log('rootSpaceEdit created()')
@@ -38,7 +46,7 @@ export default {
       *  eventually it will have to be in $store
       *  which will complicate the updates . . .
       */
-      rootSpaces: [],
+      rootSpaces: null,
       token: this.$store.state.jwt
     }
   },
