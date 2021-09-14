@@ -46,7 +46,7 @@ const engine = {
     }
     const promise = axios({
       method: 'get',
-      url: '/api-ezbook/checkAvailabilityByDates/' + start + '/' + end
+      url: '/api-ezbook/availability/' + start + '/' + end
     })
     return promise
   },
@@ -147,11 +147,8 @@ const engine = {
     })
     return request
   },
-  getRootSpaces: (token) => {
+  getRootSpaces: () => {
     const request = axios({
-      headers: {
-        jwt: token
-      },
       method: 'get',
       url: '/api-ezbook/root-spaces/'
     })

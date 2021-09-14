@@ -112,6 +112,18 @@
           </v-list-item-content>
         </v-list-item>
 
+        <v-list-item
+          v-if="account.id > 0"
+          to="/wtreetable"
+        >
+          <v-list-item-action>
+            <v-icon>fa-calendar</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>WTreeTable</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -170,5 +182,8 @@ export default {
 <style scoped>
   .v-navigation-drawer{
     z-index: 1200;
+  }
+  .v-list-item__action{
+    margin-right: 0px !important;
   }
 </style>

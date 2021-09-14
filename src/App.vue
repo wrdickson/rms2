@@ -34,7 +34,7 @@ export default {
     }
 
     //  load initial data
-    //  TODO as is, these are not async in the api.  fix.
+    //  TODO as is, these are not async .  fix.
     const self = this
     api.engine.getSpaces().then(function (response) {
       //  don't know why api returns an object here . .  look at it!!!!
@@ -56,6 +56,32 @@ export default {
     })
     api.engine.getReservations().then(function (response) {
       self.$store.commit('setReservations', response.data)
+    })
+    api.engine.getRootSpaces().then((response) => {
+      self.$store.commit('setRootSpaces', response.data.root_spaces)
+      //  also, we want to generate the initial tapeChartGridShowState
+      const showState = {}
+      _.each(response.data.root_spaces, (iSpace) => {
+        //  this is the recursive function we're going to call a bit later . . .
+        var calculateChildren = function (arr, spaceId) {
+          var spaceCode = []
+          _.each(arr, (iSpace) => {
+            if (iSpace.childOf === spaceId) {
+              //  RECURSIVE --->
+              var c = calculateChildren(arr, iSpace.id)
+              spaceCode.push(iSpace.id)
+              spaceCode = spaceCode.concat(c)
+            }
+          })
+          return spaceCode
+        }
+
+        showState[iSpace.id] = {
+          showChildren: iSpace.showChildren,
+          children: calculateChildren(response.data.root_spaces, iSpace.id)
+        }
+      })
+      self.$store.commit('setTapeChartGridShowState', showState)
     })
   }
 }

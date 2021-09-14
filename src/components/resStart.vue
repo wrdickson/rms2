@@ -9,14 +9,14 @@
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
           v-model="computedDateFormatted"
-          label="Select date"
+          label="Checkin"
           prepend-icon="mdi mdi-calendar"
           readonly
           v-bind="attrs"
           v-on="on"
         ></v-text-field>
       </template>
-      <v-date-picker v-model="date" no-title @input="menu = false"></v-date-picker>
+      <v-date-picker v-model="checkinLocal" no-title @input="menu = false"></v-date-picker>
     </v-menu>
   </div>
 </template>
@@ -24,27 +24,29 @@
 <script>
 import dayjs from 'dayjs'
 export default {
-  name: 'resViewStart',
+  name: 'resStart',
   data: function () {
     return {
       menu: false,
-      //  actually, we want a prop here . . . components don't go to $store
-      date: this.$store.state.resViewStart
+      checkinLocal: this.checkin.slice()
     }
+  },
+  props: {
+    checkin: String
   },
   computed: {
     computedDateFormatted () {
-      return dayjs(this.date).format('MMMM DD YYYY')
+      return dayjs(this.checkinLocal).format('MMMM DD YYYY')
     }
   },
   methods: {
     dateChange () {
-      console.log('dateChange()', this.date)
+      console.log('dateChange()', this.checkinLocal)
     }
   },
   watch: {
-    date (val, oldVal) {
-      this.$emit('resStartChange', this.date)
+    checkinLocal (val, oldVal) {
+      this.$emit('checkinDateChange', this.checkinLocal)
     }
   }
 }

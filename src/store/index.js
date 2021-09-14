@@ -5,12 +5,18 @@ import moment from 'moment'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  //  the docs say to set strict to FALSE for PRODUCTION
+  //  https://vuex.vuejs.org/guide/strict.html
+  //  true is good for warning you when you're messing with the data flow
+  strict: true,
   state: {
     account: {},
+    currentSpaceOpenClose: [],
     jwt: '',
     reservations: [],
     resViewStart: moment().format('YYYY-MM-DD'),
     resViewEnd: moment().add(32, 'day').format('YYYY-MM-DD'),
+    rootSpaces: null,
     selectedFolio: {
       id: '999',
       sales: [],
@@ -38,7 +44,9 @@ export default new Vuex.Store({
     },
     selectedReservationId: '0',
     spaces: [],
-    spaceTypes: {}
+    spaceTypes: {},
+    tapeChartGridShowState: null,
+    tapeChartScrollPosition: { x: 0, y: 0 }
   },
   mutations: {
     setAccount (state, account) {
@@ -67,6 +75,9 @@ export default new Vuex.Store({
     setResViewStart (state, resViewStart) {
       state.resViewStart = resViewStart
     },
+    setRootSpaces (state, rootSpaces) {
+      state.rootSpaces = rootSpaces
+    },
     setSelectGroups (state, selectGroups) {
       state.selectGroups = selectGroups
     },
@@ -75,6 +86,13 @@ export default new Vuex.Store({
     },
     setSpaceTypes (state, spaceTypes) {
       state.spaceTypes = spaceTypes
+    },
+    setTapeChartGridShowState (state, showState) {
+      state.tapeChartGridShowState = showState
+    },
+    // @param position: object with x and y coordinates
+    setTapeChartScrollPosition (state, position) {
+      state.tapeChartScrollPosition = position
     }
 
   },

@@ -288,12 +288,10 @@ export default {
           text: 'Child Of',
           value: 'childOf'
         },
-        /*
         {
           text: 'Space Code',
           value: 'spaceCode'
         },
-        */
         {
           text: 'Action',
           value: 'action'

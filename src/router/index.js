@@ -36,6 +36,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "res-view" */ '../views/Ag-Grid.vue')
   },
   {
+    path: '/create-reservation/',
+    name: 'create-reservation',
+    component: () => import(/* webpackChunkName: "res-view" */ '../views/CreateReservation.vue'),
+    props: true
+  },
+  {
     path: '/dhtmlx/',
     name: 'dhtmlx',
     component: () => import(/* webpackChunkName: "res-view" */ '../views/dhcmlxGrid.vue')
@@ -54,6 +60,11 @@ const routes = [
     path: '/tapechart/',
     name: 'tapechart',
     component: () => import(/* webpackChunkName: "tape-chart" */ '../views/TapeChart.vue')
+  },
+  {
+    path: '/wtreetable/',
+    name: 'wtreetable',
+    component: () => import(/* webpackChunkName: "wtreetable" */ '../views/WTreeTable.vue')
   }
 ]
 

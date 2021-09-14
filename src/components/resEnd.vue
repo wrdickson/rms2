@@ -24,7 +24,7 @@
 <script>
 import dayjs from 'dayjs'
 export default {
-  name: 'resViewStart',
+  name: 'resEnd',
   data: function () {
     return {
       menu: false,
@@ -44,7 +44,7 @@ export default {
   },
   watch: {
     date (val, oldVal) {
-      this.$emit('resStartChange', this.date)
+      this.$emit('resEndChange', this.date)
     }
   }
 }
